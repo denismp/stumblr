@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+    <!-- Set up the data source -->
+    <bean id="stumblrDS" class="org.apache.commons.dbcp.BasicDataSource"
+        destroy-method="close"
+        p:driverClassName="org.hsqldb.jdbcDriver"
+        p:url="jdbc:hsqldb:mem:."
+        p:username="sa"
+        p:password=""/>
+
+    <!-- Set up the Hibernate Session factory -->
+    <bean id="sessionFactory"
+          class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+        <property name="configurationClass">
+            <value>org.hibernate.cfg.AnnotationConfiguration</value>
+        </property>
+        <property name="annotatedClasses">
+            <list>
+                <value>com.rnsolutions.stumblr.entity.Post</value>
+                <value>com.rnsolutions.stumblr.entity.TextPost</value>
+            </list>
+        </property>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.HSQLDialect</prop>
+                <prop key="hibernate.transaction.factory_class">org.hibernate.transaction.JDBCTransactionFactory</prop>
+                <prop key="hibernate.show_sql">false</prop>
+                <prop key="hibernate.hbm2ddl.auto">create-drop</prop>
+                <prop key="hibernate.connection.release_mode">auto</prop>
+                <prop key="hibernate.cache.provider_class">org.hibernate.cache.NoCacheProvider</prop>
+            </props>
+        </property>
+        <property name="dataSource" ref="stumblrDS"/>
+    </bean>
+
+    <!-- Set up our transaction manager -->
+    <bean id="transactionManager"
+                class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+
+    <!-- Set up our daos -->
+    <bean id="postDao" class="com.rnsolutions.stumblr.dao.HibernatePostDao">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+</beans>

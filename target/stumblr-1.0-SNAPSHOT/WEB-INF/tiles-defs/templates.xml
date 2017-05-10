@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+        "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN"
+        "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+
+<tiles-definitions>
+
+    <!-- Default Main Template -->
+    <definition name=".mainTemplate" template="/WEB-INF/jsp/tiles/main.jsp">
+        <put-attribute name="htmlHead" value="/WEB-INF/jsp/tiles/blank.jsp"/>
+        <put-attribute name="title" value="Stumblr" type="string"/>
+        <put-attribute name="header" value="/WEB-INF/jsp/tiles/header.jsp"/>
+        <put-attribute name="footer" value="/WEB-INF/jsp/tiles/footer.jsp"/>
+        <put-attribute name="body" value="/WEB-INF/jsp/tiles/blank.jsp"/>
+    </definition>
+
+    <definition name="homepage" extends=".mainTemplate">
+        <put-attribute name="title" value="Stumblr Home Page" type="string"/>
+        <put-attribute name="body" value="/WEB-INF/jsp/homepage.jsp"/>
+    </definition>
+
+    <definition name="newText" extends=".mainTemplate">
+        <put-attribute name="title" value="New Text Post" type="string"/>
+        <put-attribute name="body" value="/WEB-INF/jsp/new/text.jsp"/>
+    </definition>
+
+    <definition name="newQuote" extends=".mainTemplate">
+        <put-attribute name="title" value="New Quote Post" type="string"/>
+        <put-attribute name="body" value="/WEB-INF/jsp/new/quote.jsp"/>
+    </definition>
+
+    <definition name="newLink" extends=".mainTemplate">
+        <put-attribute name="title" value="New Link Post" type="string"/>
+        <put-attribute name="body" value="/WEB-INF/jsp/new/link.jsp"/>
+    </definition>
+
+</tiles-definitions>

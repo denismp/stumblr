@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:dwr="http://www.directwebremoting.org/schema/spring-dwr"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+        http://www.directwebremoting.org/schema/spring-dwr http://www.directwebremoting.org/schema/spring-dwr-3.0.xsd"
+       default-autowire="byName">
+
+    <bean id="AddressDwrUtil" class="gov.grantsolutions.address.client.AddressDwrUtil">
+        <property name="addressLookupService" ref="addressServiceClient"/>
+        <property name="addressValidationService" ref="addressServiceClient"/>
+        <property name="congDistService" ref="addressServiceClient"/>
+        <dwr:remote javascript="AddressDwrUtil">
+            <dwr:include method="listCounties"/>
+            <dwr:include method="getCountyByCityAndState"/>
+            <dwr:include method="validateAddress"/>
+            <dwr:include method="getDistrictCodesByState"/>
+            <dwr:include method="getDistrictsByState"/>
+            <dwr:include method="getRepByStateDistrict"/>
+        </dwr:remote>
+    </bean>
+ 
+    <bean id="resetPasswordDwr" class="gov.grantsolutions.dwr.ResetPasswordDwr">
+        <property name="userService" ref="userService"/>
+        <property name="contactService" ref="contactService"/>
+        <property name="personService" ref="personService"/>
+        <property name="mailSender" ref="mailSender"/>
+        <property name="templateMessage" ref="sentPasswordEmailTemplateMessage"/>
+        <property name="emailConfig" ref="emailConfiguration"/>
+        <dwr:remote javascript="ResetPasswordDwr">
+            <dwr:include method="resetPassword"/>
+        </dwr:remote>
+    </bean>
+
+    <bean id="formAttachmentDwr" class="gov.grantsolutions.dwr.FormAttachmentDwr">
+        <property name="formAttachmentService" ref="formAttachmentService"/>
+        <property name="webDavUtil" ref="webDavUtil"/>
+        <dwr:remote javascript="FormAttachmentDwr">
+            <dwr:include method="getLatestStatus"/>
+            <dwr:include method="deleteAttachment"/>
+        </dwr:remote>
+    </bean>
+
+    <dwr:configuration>
+        <dwr:convert type="bean" class="gov.grantsolutions.address.entity.County" javascript="County"/>
+        <dwr:convert type="bean" class="gov.grantsolutions.address.entity.City" javascript="City"/>
+        <dwr:convert type="bean" class="gov.grantsolutions.address.entity.ZipCode" javascript="ZipCode"/>
+        <dwr:convert type="bean" class="gov.grantsolutions.address.entity.State" javascript="State"/>
+        <dwr:convert type="bean" class="gov.grantsolutions.address.entity.District" javascript="District"/>
+        <dwr:convert type="bean" class="gov.grantsolutions.address.validation.client.ValidatedAddress" javascript="ValidatedAddress"/>
+    </dwr:configuration>
+</beans>       
